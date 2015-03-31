@@ -8,8 +8,8 @@ This code is part of the prototype implementation of the Passe system
 described in the paper "Automating Isolation and Least Privilege in
 Web Services" by Aaron Blankstein and Michael J. Freedman.
 
-A lot of this code is inexplicably bears the name "Hachi". This was an
-old name for the project, that has remained in the codebase.
+A lot of this code inexplicably bears the name "Hachi". This was an
+old name for the project that has remained in the codebase.
 
 **CAVEAT**: This prototype was used to evaluate the ability of the
 project to run efficiently, play nicely with AppArmor, and effectively
@@ -19,7 +19,7 @@ security parameters (such as the secret key used to MAC security
 tokens) are hardcoded, compromising the security in real usage
 scenarios. Furthermore, the constraint checker in the execution mode
 **will not** halt database accesses that violates constraints, rather
-it prints the violation to STDOUT.
+it prints the violation to `STDOUT`.
 
 Using this code
 ---------------
@@ -104,7 +104,8 @@ Installation
    analysis environment.
  - See (https://github.com/kantai/passe-pypy-taint-tracking)
 3. pip install selenium pyyaml pyro4
- - libraries are required for BOTH execution environments
+ - libraries are required for *both* the execution environment and the
+   analysis environment.
  - the old version of pyro is actually a dependency, because Passe
    plays some tricks to ensure that pyro4 is using a safe deserialization
    technique.
