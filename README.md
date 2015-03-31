@@ -21,12 +21,21 @@ scenarios. Furthermore, the constraint checker in the execution mode
 **will not** halt database accesses that violates constraints, rather
 it prints the violation to `STDOUT`.
 
+License
+-------
+
+This code is a modified fork of the release code of Django
+1.3. Django's copyright information and license has been left
+intact. Any new code not owned or licensed by Django, to the
+extent that such code exists, is covered by the attached CRAPL
+license (see CRAPL-LICENSE.txt).
+
 Using this code
 ---------------
 
 Getting Passe up and running on your machine is going to be a bit of
 an involved process and usually requires somewhat detailed knowledge
-of Django 1.4's loading and db syncing process and Python pathing
+of Django 1.3's loading and db syncing process and Python pathing
 intricacies.
 
 To successfully run the "analysis phase" of Passe, you will first need
