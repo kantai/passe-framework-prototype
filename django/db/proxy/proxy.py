@@ -85,7 +85,7 @@ class ProxyInstance:
         self.dbconn.create_function("regexp", 2, _sqlite_regexp)
         self.dbconn.create_function("django_format_dtdelta", 5, _sqlite_format_dtdelta)
 
-    def create_cursor(self):        
+    def create_cursor(self):
         try:
             self.cursors[self.cursor_id] = HachiProxyCursor(self.source, self.dbconn)
             self.cursor_id += 1
@@ -138,8 +138,8 @@ class ProxyInstance:
                 #raise Exception("Arguments failed constraints.")
 
             return self.cursors[cursor_id].execute(oper, parameters), None
-            
-        except Exception as e: 
+
+        except Exception as e:
             import traceback
             print traceback.format_exc()
             raise e
@@ -222,12 +222,10 @@ class HachiProxyCursor:
     def get_lastrowid(self):
         return self.cursor.lastrowid
     def execute(self, oper, parameters = False):
-        # TODO: this is where our guards must be.
         if parameters == False:
             self.cursor.execute(oper)
         self.cursor.execute(oper, parameters)
     def executemany(self, operation, seq_of_parametrs):
-        # TODO: check all guards.
         self.cursor.executemany(operation, seq_of_parameters)
     def fetchone(self):
         return self.cursor.fetchone()
@@ -384,7 +382,7 @@ def check_token(token):
 def _check_args_assert(assertion, args, token):
     if not args:
             args = []
-    
+
     for cur_assertion in assertion:
         if not cur_assertion.check_assert(args, token):
             print "Failed : %s" %  (cur_assertion.printerr(args, token))

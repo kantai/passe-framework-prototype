@@ -107,7 +107,7 @@ class ProxyInstance:
         self.dbconn = {}
 #        self._create_conn()
 
-    def create_cursor(self):        
+    def create_cursor(self):
         try:
             self.cursors[self.cursor_id] = HachiProxyCursor(self.source, self.get_dbconn())
             self.cursor_id += 1
@@ -156,12 +156,15 @@ class ProxyInstance:
                 print "Admissability Error in %s" % self.source
                 return self.cursors[cursor_id].execute(oper, parameters), None
             asserts = self.asserts[test_oper]
+
+            check_token(token)
+
             if not _check_args_assert(asserts, test_params, token):
                 print "Error in %s" % self.source
                 print "Constraint Error in %s" % self.source
             return self.cursors[cursor_id].execute(oper, parameters), None
-            
-        except Exception as e: 
+
+        except Exception as e:
             import traceback
             print traceback.format_exc()
             raise e
@@ -180,6 +183,8 @@ class ProxyInstance:
                 print "Admissability Error in %s" % self.source
                 return self.cursors[cursor_id].executemany(operation, seq_of_parameters), None
             asserts = self.asserts[test_oper]
+
+            check_token(token)
 
             if not _check_args_assert(asserts, test_params, token):
                 print "Constraint Error in %s" % self.source
@@ -243,12 +248,10 @@ class HachiProxyCursor:
     def get_lastrowid(self):
         return self.cursor.lastrowid
     def execute(self, oper, parameters = False):
-        # TODO: this is where our guards must be.
         if parameters == False:
             self.cursor.execute(oper)
         self.cursor.execute(oper, parameters)
     def executemany(self, operation, seq_of_parametrs):
-        # TODO: check all guards.
         self.cursor.executemany(operation, seq_of_parameters)
     def fetchone(self):
         return self.cursor.fetchone()
@@ -353,7 +356,7 @@ def check_token(token):
 def _check_args_assert(assertion, args, token):
     if not args:
             args = []
-    
+
     for cur_assertion in assertion:
         if not cur_assertion.check_assert(args, token):
             print "Failed : %s" %  (cur_assertion.printerr(args, token))
