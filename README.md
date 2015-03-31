@@ -47,6 +47,13 @@ this is not secure. In production use, this key should be stored in a location
 inaccessible to untrusted views, but accessible to the trusted components
 (database proxy, dispatcher).
 
+HTML5 Privilege Separation
+--------------------------
+
+In order to interpose on scripted JS requests, Passe lightly modified code from
+[HTML5 Privilege Seperation](https://github.com/devd/html5privsep). The
+modified code is found in `django/contrib/html5privsep/`
+
 Navigating the Source Code
 --------------------------
 
