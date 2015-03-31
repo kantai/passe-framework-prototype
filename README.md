@@ -11,14 +11,15 @@ Web Services" by Aaron Blankstein and Michael J. Freedman.
 A lot of this code is inexplicably bears the name "Hachi". This was an
 old name for the project, that has remained in the codebase.
 
-**CAVEAT**: This prototype was used to evaluate the ability of the project to
-run efficiently, play nicely with AppArmor, and effectively generate invariants
-during the dynamic analysis phase. As such, it is not a robust codebase and
-is not meant for production use. Certain security parameters (such as
-the secret key used to MAC security tokens) are hardcoded,
-compromising the security in real usage scenarios. Furthermore, the constraint
-checker in the execution mode **will not** halt that violates constraints,
-rather it prints the violation to STDOUT.
+**CAVEAT**: This prototype was used to evaluate the ability of the
+project to run efficiently, play nicely with AppArmor, and effectively
+generate invariants during the dynamic analysis phase. As such, it is
+not a robust codebase and is not meant for production use. Certain
+security parameters (such as the secret key used to MAC security
+tokens) are hardcoded, compromising the security in real usage
+scenarios. Furthermore, the constraint checker in the execution mode
+**will not** halt database accesses that violates constraints, rather
+it prints the violation to STDOUT.
 
 Using this code
 ---------------
@@ -166,7 +167,8 @@ Running Applications
          /tmp/hachi_view_bar $i &
          python manage.py spawnhelpers $i &
      done
-     gunicorn -w $PASSE_WORKERS -b 0.0.0.0:8000 foo.wsgi:application```
+     gunicorn -w $PASSE_WORKERS -b 0.0.0.0:8000 foo.wsgi:application
+     ```
 
    The benchmarking application in passe-sample-apps contains a modified
    hachi_spawn_script.sh used to spawn multiple workers.
