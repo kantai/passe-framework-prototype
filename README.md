@@ -30,9 +30,10 @@ of Django 1.4's loading and db syncing process and Python pathing
 intricacies.
 
 To successfully run the "analysis phase" of Passe, you will first need
-to get the taint-tracking version of PyPy built.  Secondly, Passe
-should be run with Postgres or SQLite3. Once you've got that sorted, you
-will need to correctly set your PYTHONPATH such that Passe's libraries
+to fetch and build the associated
+[taint-tracking version of PyPy](https://github.com/kantai/passe-pypy-taint-tracking).
+Secondly, Passe requires Postgres or SQLite3. Once you've got that sorted, you
+will need to correctly set your `PYTHONPATH` such that Passe's libraries
 are loaded, and your Django application's libraries are loaded.
 Auto-generated scripts will assume that the analysis phase's paths are
 the same as the execution phase's paths. So if any of your path
@@ -41,7 +42,7 @@ that you analyze and execute your application from the same working
 directory.
 
 Finally, the secret key used to MAC security token by the database proxy
-and other trusted helpers is hardcoded in htoken/__init__.py. Obviously,
+and other trusted helpers is hardcoded in `htoken/__init__.py`. Obviously,
 this is not secure. In production use, this key should be stored in a location
 inaccessible to untrusted views, but accessible to the trusted components
 (database proxy, dispatcher).
@@ -107,7 +108,7 @@ Installation
 Running Applications
 --------------------
 
-0. General hint: check out the "hello world" application settings.py file.
+0. General hint: check out the benchmarking application's `settings.py` file.
 1. Modify your settings.py:
    Engine should be the `pgsql_psycopg` option
 
@@ -118,38 +119,38 @@ Running Applications
    check what the sample app's `LOGGING` settings look like
 3. Some middleware may be broken (one version of the CSRF middleware
    was broken by Passe)
-4. Make sure your `PYTHONPATH` contains your application AND the Passe
+4. Make sure your `PYTHONPATH` contains your application *and* the Passe
    library.
 5. At this point, you can run `manage.py runserver --analyze` to
    begin the analysis phase. Submit some requests to the server.
 6. Once finished (kill server with CTRL-C and wait for the merging of
-   analysis) scripts and output will be placed in /tmp/hachi_*
+   analysis) scripts and output will be placed in `/tmp/hachi_*`
 7. The output scripts will execute your application with the Django
    test server. However, many environments will likely require some
    editing of these scripts. You will also need to be sure to run
    `syncdb` before trying to execute your application.
 
    You will have some starter AppArmor comnfiguration files
-   (hachi_view_*.a).  These will need to be modified to match some
+   (`/tmp/hachi_view_*.a`).  These will need to be modified to match some
    specifics of your OS, if you want to run Passe with AppArmor
    jails. You can also modify the default AppArmor configuration in
-   the source code file (django/analysis/persisted.py:create_apparmor_prof).
+   the source code file (`django/analysis/persisted.py:create_apparmor_prof`).
    This function will spit out the Passe specific sockets required for
    communication, and some libraries that were required for my environment.
    You can add additional libraries that need to be loaded
    and given exec privileges.
 
-   The /tmp/django_analysis file contains the inferred invariants for
+   The `/tmp/django_analysis` file contains the inferred invariants for
    database queries.
 
-   The /tmp/hachi_spawn_script.sh script will spawn all of the Passe
+   The `/tmp/hachi_spawn_script.sh` script will spawn all of the Passe
    views, and the Passe helper processes (the dispatcher, isolated
    middleware, and database proxy). This file may need to be modified
    for your particular deployment. To use gunicorn, for example, you
-   need to be replace the "manage.py runserver" line with the startup
+   need to be replace the `manage.py runserver` line with the startup
    call to gunicorn.
 
-   The /tmp/hachi_view_* files are spawn scripts which run each Passe view
+   The `/tmp/hachi_view_*` files are spawn scripts which run each Passe view
    in a separate process. They are named such that the associated AppArmor
    profile will be loaded if those profiles are loaded into AppArmor
    (via: `sudo apparmor_parser -C profile-name.a`)
